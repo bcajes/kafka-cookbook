@@ -14,4 +14,6 @@ recipe 'kafka::zookeeper', 'Setups standalone ZooKeeper instance using the ZooKe
 
 recommends 'java', '~> 1.15.4'
 
-supports 'centos'
+%w(centos debian).each do |os|
+  supports os
+end
