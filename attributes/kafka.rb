@@ -3,10 +3,10 @@
 # Attributes:: kafka
 #
 
-default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
+default[:kafka][:heap_opts] = '-Xmx800M -Xms500M'
 default[:kafka][:generic_opts] = nil
 
-default[:kafka][:broker_id] = node[:ipaddress].gsub('.', '')
+default[:kafka][:broker_id] = node[:network][:interfaces][:eth1][:addresses].first
 default[:kafka][:host_name] = node[:hostname]
 default[:kafka][:port] = 9092
 default[:kafka][:network_threads] = 2
@@ -25,7 +25,7 @@ default[:kafka][:log][:retention_bytes] = 1073741824
 default[:kafka][:log][:segment_bytes] = 536870912
 default[:kafka][:log][:cleanup_interval_mins] = 1
 
-default[:kafka][:zookeeper][:connect] = []
+default[:kafka][:zookeeper][:connect] = ["192.168.50.3", "192.168.50.4", "192.168.50.5"]
 default[:kafka][:zookeeper][:timeout] = 1000000
 
 default[:kafka][:metrics][:polling_interval] = 5
