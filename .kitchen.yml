@@ -11,33 +11,68 @@ provisioner:
 
 platforms:
   - name: centos-6.5
-
-suites:
-  - name: configuration
-    run_list:
-      - recipe[kafka::_setup]
-      - recipe[kafka::_configure]
     attributes:
       java:
         jdk_version: 7
+  - name: debian-7.2.0
+    attributes:
+      java:
+        jdk_version: 6
+  - name: ubuntu-13.10
+    run_list:
+      - recipe[apt]
+    attributes:
+      java:
+        jdk_version: 7
+      kafka:
+        init_style: 'upstart'
+  - name: fedora-18
+    attributes:
+      java:
+        jdk_version: 7
+
+suites:
+  - name: init-style-upstart
+    run_list:
+      - recipe[java]
+      - recipe[kafka]
+    excludes:
+      - centos-6.5
+      - debian-7.2.0
+      - fedora-18
+    attributes:
+      kafka:
+        install_method: 'binary'
+        init_style: 'upstart'
+        zookeeper:
+          connection_timeout_ms: 10_000
+  - name: init-style-sysv
+    run_list:
+      - recipe[java]
+      - recipe[kafka]
+    excludes:
+      - ubuntu-13.10
+    attributes:
+      kafka:
+        install_method: 'binary'
+        init_style: 'sysv'
+        zookeeper:
+          connection_timeout_ms: 10_000
   - name: binary
     run_list:
       - recipe[java]
-      - recipe[kafka::binary]
+      - recipe[kafka]
     attributes:
-      java:
-        jdk_version: 7
+      kafka:
+        install_method: 'binary'
   - name: source
     run_list:
       - recipe[java]
-      - recipe[kafka::source]
+      - recipe[kafka]
     attributes:
-      java:
-        jdk_version: 7
+      kafka:
+        install_method: 'source'
   - name: zookeeper
     run_list:
       - recipe[java]
       - recipe[kafka::zookeeper]
-    attributes:
-      java:
-        jdk_version: 7
