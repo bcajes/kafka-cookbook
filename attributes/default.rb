@@ -18,7 +18,7 @@ default[:kafka][:config] = 'server.properties'
 default[:kafka][:jmx_port] = 9999
 default[:kafka][:user] = 'kafka'
 default[:kafka][:group] = 'kafka'
-default[:kafka][:heap_opts] = '-Xmx1G -Xms1G'
+default[:kafka][:heap_opts] = '-Xmx900M -Xms500M'
 default[:kafka][:generic_opts] = nil
 default[:kafka][:init_style] = :sysv
 
@@ -30,7 +30,7 @@ default[:kafka][:num_io_threads] = 8
 default[:kafka][:queued_max_requests] = 500
 
 # Socket server configuration
-default[:kafka][:port] = 6667
+default[:kafka][:port] = 9092
 default[:kafka][:host_name] = node[:hostname]
 default[:kafka][:socket][:send_buffer_bytes] = 100 * 1024
 default[:kafka][:socket][:receive_buffer_bytes] = 100 * 1024
@@ -78,7 +78,7 @@ default[:kafka][:controlled_shutdown][:retry_backoff_ms] = 5000
 default[:kafka][:controlled_shutdown][:enabled] = false
 
 # ZooKeeper configuration
-default[:kafka][:zookeeper][:connect] = []
+default[:kafka][:zookeeper][:connect] = ["192.168.50.3", "192.168.50.4", "192.168.50.5"]
 default[:kafka][:zookeeper][:connection_timeout_ms] = 6000
 default[:kafka][:zookeeper][:session_timeout_ms] = 6000
 default[:kafka][:zookeeper][:sync_time_ms] = 2000
